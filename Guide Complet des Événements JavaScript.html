@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide des Événements JavaScript</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .event-card {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s;
+        }
+        
+        .event-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .event-title {
+            color: #333;
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+        
+        .event-code {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .event-description {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .demo-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        input[type="text"],
+        input[type="password"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button, input[type="submit"], input[type="button"] {
+            background: #667eea;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        
+        .output {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            min-height: 50px;
+        }
+        
+        .output-content {
+            color: #333;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .counter {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .hover-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .hover-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+        }
+        
+        .key-display {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 10px 5px;
+        }
+        
+        video {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 10px;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .success {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            border-color: #17a2b8;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background-color: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .comparison-table tr:hover {
+            background-color: #e9ecef;
+        }
+        
+        .comparison-table td:first-child {
+            font-weight: 600;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body onload="handleLoad()">
+    <div class="container">
+        <h1>📚 Guide Complet des Événements JavaScript</h1>
+        <p class="subtitle">13 événements essentiels avec démonstrations interactives</p>
+        
+        <!-- 1. onload -->
+        <div class="event-card">
+            <div class="event-header">
+                <span class="event-title">1️⃣ onload</span>
+                <span class="event-code">onload</span>
+            </div>
+            <p class="event-description">
+                <strong>Se déclenche :</strong> Quand la page ou un élément a fini de charger
+            </p>
+            <div class="demo-box">
+                <div class="output success">
+                    <div class="output-content" id="loadOutput">Chargement...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. onclick -->
+        <div class="event-card">
+            <div class="event-header">
+                <span class="event-title">2️⃣ onclick</span>
+                <span class="event-code">onclick</span>
+            </div>
+            <p class="event-description">
+                <strong>Se déclenche :</strong> Quand on clique sur un élément
+            </p>
+            <div class="demo-box">
+                <button onclick="handleClick()">Cliquez-moi !</button>
+                <div class="output">
+                    <div class="output-content">
+                        Nombre de clics : <span class="counter" id="clickCounter">0</span>
+                        <div id="clickOutput"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. onfocus -->
+        <div class="event-card">
+            <div class="event-header">
+                <span class="event-title">3️⃣ onfocus</span>
+                <span class="event-code">onfocus</span>
+            </div>
+            <p class="event-description">
+                <strong>Se déclenche :</strong> Quand un élément reçoit le focus (devient actif)
+            </p>
+            <div class="demo-box">
+                <input type="text" id="focusInput" onfocus="handleFocus()" 
+                       placeholder="Cliquez ici pour obtenir le focus">
+                <div class="output info">
+                    <div class="output-content" id="focusOutput">En attente du focus...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. onblur -->
+        <div class="event-card">
+            <div class="event-header">
+                <span class="event-title">4️⃣ onblur</span>
+                <span class="event-code">onblur</span>
+            </div>
+            <p class="event-description">
+                <strong>Se déclenche :</strong> Quand un élément perd le focus
+            </p>
+            <div class="demo-box">
+                <input type="text" id="blurInput" onblur="handleBlur()" 
+                       placeholder="Tapez puis cliquez ailleurs">
+                <div class="output warning">
+                    <div class="output-content" id="blurOutput">En attente...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. oninput -->
+        <div class="event-card">
+            <div class="event-header">
+                <span class="event-title">5️⃣ oninput</span>
+                <span class="event-code">oninput</span>
+            </div>
+            <p class="event-description">
+                <strong>Se déclenche :</strong> À chaque modification de la valeur (temps réel)
+            </p>
+            <div class="demo-box">
+                <input type="text" id="inputInput" oninput="handleInput()" 
+                       placeholder="Tapez du texte...">
+                <div class="output">
+                    <div class="output-content">
+                        Caractères : <span class="counter" id="inputCounter">0</span>
+                        <div id="inputOutput">Commencez à taper...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. onchange -->
+        <div class="event-card">
+            <div class="event-header">
+                <span class="event-title">6️⃣ onchange</span>
+                <span class="event-code">onchange</span>
+            </div>
+            <p class="event-description">
+                <strong>Se déclenche :</strong> Après modification ET perte de focus
+            </p>
+            <div class="demo-box">
+                <select id="changeSelect" onchange="handleChange()">
+                    <option value="">-- Choisissez une option --</option>
+                    <option value="HTML">HTML</option>
+                    <option value="CSS">CSS</option>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="PHP">PHP</option>
+                </select>
+                <div class="output">
+                    <div class="output-content" id="changeOutput">Aucune sélection</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7 & 8. onmouseover & onmouseout -->
+        <div class="event-card">
+            <div class="event-header">
+                <span class="event-title">7️⃣ & 8️⃣ onmouseover / onmouseout</span>
+                <span class="event-code">onmouseover/out</span>
+            </div>
+            <p class="event-description">
+                <strong>Se déclenche :</strong> Quand la souris entre/sort d'un élément
+            </p>
+            <div class="demo-box">
+                <div class="hover-box" 
+                     onmouseover="handleMouseOver()" 
+                     onmouseout="handleMouseOut()">
+                    Passez la souris sur moi !
+                </div>
+                <div class="output">
+                    <div class="output-content" id="mouseOutput">Aucune interaction</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. onkeydown -->
+        <div class="event-card">
+            <div class="event-header">
+                <span class="event-title">9️⃣ onkeydown</span>
+                <span class="event-code">onkeydown</span>
+            </div>
+            <p class="event-description">
+                <strong>Se déclenche :</strong> Quand une touche est appuyée (avant relâchement)
+            </p>
+            <div class="demo-box">
+                <input type="text" id="keydownInput" onkeydown="handleKeyDown(event)" 
+                       placeholder="Appuyez sur une touche">
+                <div class="output">
+                    <div class="output-content" id="keydownOutput">En attente...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10. onkeyup -->
+        <div class="event-card">
+            <div class="event-header">
+                <span class="event-title">1️⃣0️⃣ onkeyup</span>
+                <span class="event-code">onkeyup</span>
+            </div>
+            <p class="event-description">
+                <strong>Se déclenche :</strong> Quand une touche est relâchée
+            </p>
+            <div class="demo-box">
+                <input type="text" id="keyupInput" onkeyup="handleKeyUp(event)" 
+                       placeholder="Tapez et relâchez">
+                <div class="output success">
+                    <div class="output-content">
+                        <div id="keyupOutput">Aucune touche relâchée</div>
+                        <div id="keyDisplay" style="margin-top: 10px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 11 & 12. onplay & onpause -->
+        <div class="event-card">
+            <div class="event-header">
+                <span class="event-title">1️⃣1️⃣ & 1️⃣2️⃣ onplay / onpause</span>
+                <span class="event-code">onplay/onpause</span>
+            </div>
+            <p class="event-description">
+                <strong>Se déclenche :</strong> Quand une vidéo/audio démarre ou se met en pause
+            </p>
+            <div class="demo-box">
+                <video id="myVideo" 
+                       onplay="handlePlay()" 
+                       onpause="handlePause()" 
+                       controls>
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la vidéo.
+                </video>
+                <div class="output">
+                    <div class="output-content" id="videoOutput">Vidéo prête</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 13. onsubmit -->
+        <div class="event-card">
+            <div class="event-header">
+                <span class="event-title">1️⃣3️⃣ onsubmit</span>
+                <span class="event-code">onsubmit</span>
+            </div>
+            <p class="event-description">
+                <strong>Se déclenche :</strong> Quand un formulaire est soumis
+            </p>
+            <div class="demo-box">
+                <form onsubmit="return handleSubmit(event)">
+                    <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+                    <input type="password" id="password" placeholder="Mot de passe" required>
+                    <input type="submit" value="Se connecter">
+                </form>
+                <div class="output">
+                    <div class="output-content" id="submitOutput">Formulaire prêt</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableau récapitulatif -->
+        <div class="event-card" style="border-left-color: #28a745;">
+            <div class="event-header">
+                <span class="event-title">📊 Tableau Récapitulatif des Événements</span>
+            </div>
+            <div class="demo-box">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Événement</th>
+                            <th>Déclenchement</th>
+                            <th>Éléments concernés</th>
+                            <th>Cas d'usage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><strong>onload</strong></td>
+                            <td>Quand la page/élément est chargé</td>
+                            <td>&lt;body&gt;, &lt;img&gt;, &lt;iframe&gt;</td>
+                            <td>Initialisation, affichage de bienvenue</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>onclick</strong></td>
+                            <td>Au clic de souris</td>
+                            <td>Tous les éléments</td>
+                            <td>Boutons, liens, actions utilisateur</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><strong>onfocus</strong></td>
+                            <td>Quand l'élément reçoit le focus</td>
+                            <td>&lt;input&gt;, &lt;select&gt;, &lt;textarea&gt;</td>
+                            <td>Afficher aide, changer style</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>onblur</strong></td>
+                            <td>Quand l'élément perd le focus</td>
+                            <td>&lt;input&gt;, &lt;select&gt;, &lt;textarea&gt;</td>
+                            <td>Validation après saisie</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><strong>oninput</strong></td>
+                            <td>À chaque modification (temps réel)</td>
+                            <td>&lt;input&gt;, &lt;textarea&gt;</td>
+                            <td>Recherche en direct, compteur caractères</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><strong>onchange</strong></td>
+                            <td>Après modification ET perte de focus</td>
+                            <td>&lt;input&gt;, &lt;select&gt;, &lt;textarea&gt;</td>
+                            <td>Menus déroulants, validation finale</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><strong>onmouseover</strong></td>
+                            <td>Quand la souris entre dans l'élément</td>
+                            <td>Tous les éléments</td>
+                            <td>Info-bulles, effets hover</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><strong>onmouseout</strong></td>
+                            <td>Quand la souris sort de l'élément</td>
+                            <td>Tous les éléments</td>
+                            <td>Masquer info-bulles, réinitialiser style</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><strong>onkeydown</strong></td>
+                            <td>Quand une touche est appuyée</td>
+                            <td>&lt;input&gt;, &lt;textarea&gt;, document</td>
+                            <td>Raccourcis clavier, jeux</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><strong>onkeyup</strong></td>
+                            <td>Quand une touche est relâchée</td>
+                            <td>&lt;input&gt;, &lt;textarea&gt;, document</td>
+                            <td>Validation caractères, recherche</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td><strong>onplay</strong></td>
+                            <td>Quand la lecture démarre</td>
+                            <td>&lt;video&gt;, &lt;audio&gt;</td>
+                            <td>Analytics, contrôles personnalisés</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td><strong>onpause</strong></td>
+                            <td>Quand la lecture est en pause</td>
+                            <td>&lt;video&gt;, &lt;audio&gt;</td>
+                            <td>Sauvegarder position, afficher menu</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td><strong>onsubmit</strong></td>
+                            <td>Quand un formulaire est soumis</td>
+                            <td>&lt;form&gt;</td>
+                            <td>Validation avant envoi, AJAX</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Comparaison oninput vs onchange -->
+        <div class="event-card" style="border-left-color: #ffc107;">
+            <div class="event-header">
+                <span class="event-title">⚡ Comparaison détaillée : oninput vs onchange</span>
+            </div>
+            <div class="demo-box">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Critère</th>
+                            <th style="background-color: #28a745;">oninput</th>
+                            <th style="background-color: #667eea;">onchange</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Déclenchement</strong></td>
+                            <td>À chaque modification immédiate</td>
+                            <td>Après modification + perte de focus</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fréquence</strong></td>
+                            <td>À chaque caractère tapé</td>
+                            <td>Une seule fois par modification</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Temps réel</strong></td>
+                            <td>✅ Oui, instantané</td>
+                            <td>❌ Non, après validation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance</strong></td>
+                            <td>⚠️ Plus gourmand (nombreux appels)</td>
+                            <td>✅ Meilleure (peu d'appels)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>&lt;input type="text"&gt;</strong></td>
+                            <td>Réaction instantanée pendant la saisie</td>
+                            <td>Nécessite de quitter le champ</td>
+                        </tr>
+                        <tr>
+                            <td><strong>&lt;select&gt;</strong></td>
+                            <td>❌ Non supporté</td>
+                            <td>✅ Se déclenche immédiatement</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cas d'usage</strong></td>
+                            <td>Recherche en direct, compteur de caractères, validation instantanée</td>
+                            <td>Validation finale, menus déroulants, sauvegarde après saisie</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Exemple pratique</strong></td>
+                            <td>Barre de recherche Google, limite de caractères Twitter</td>
+                            <td>Formulaire d'inscription, sélection de pays</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        // Variables globales pour les compteurs
+        let clickCount = 0;
+        let inputCharCount = 0;
+        
+        // 1. onload
+        function handleLoad() {
+            document.getElementById('loadOutput').innerHTML = 
+                '✅ Page chargée avec succès ! Temps : ' + new Date().toLocaleTimeString();
+        }
+        
+        // 2. onclick
+        function handleClick() {
+            clickCount++;
+            document.getElementById('clickCounter').textContent = clickCount;
+            document.getElementById('clickOutput').innerHTML = 
+                '<br>Dernier clic à : ' + new Date().toLocaleTimeString();
+        }
+        
+        // 3. onfocus
+        function handleFocus() {
+            document.getElementById('focusOutput').innerHTML = 
+                '✅ Focus obtenu ! Le champ est maintenant actif - ' + new Date().toLocaleTimeString();
+            document.getElementById('focusInput').style.borderColor = '#28a745';
+        }
+        
+        // 4. onblur
+        function handleBlur() {
+            const value = document.getElementById('blurInput').value;
+            document.getElementById('blurOutput').innerHTML = 
+                `⚠️ Focus perdu ! Valeur saisie : "${value}" - ${new Date().toLocaleTimeString()}`;
+            document.getElementById('blurInput').style.borderColor = '#ffc107';
+        }
+        
+        // 5. oninput
+        function handleInput() {
+            const value = document.getElementById('inputInput').value;
+            inputCharCount = value.length;
+            document.getElementById('inputCounter').textContent = inputCharCount;
+            document.getElementById('inputOutput').innerHTML = 
+                `Texte actuel : "${value}"`;
+        }
+        
+        // 6. onchange
+        function handleChange() {
+            const value = document.getElementById('changeSelect').value;
+            document.getElementById('changeOutput').innerHTML = 
+                value ? `✅ Vous avez sélectionné : <strong>${value}</strong>` : 'Aucune sélection';
+        }
+        
+        // 7. onmouseover
+        function handleMouseOver() {
+            document.getElementById('mouseOutput').innerHTML = 
+                '🖱️ La souris est ENTRÉE dans la zone ! ' + new Date().toLocaleTimeString();
+        }
+        
+        // 8. onmouseout
+        function handleMouseOut() {
+            document.getElementById('mouseOutput').innerHTML = 
+                '🖱️ La souris est SORTIE de la zone ! ' + new Date().toLocaleTimeString();
+        }
+        
+        // 9. onkeydown
+        function handleKeyDown(event) {
+            document.getElementById('keydownOutput').innerHTML = 
+                `⌨️ Touche APPUYÉE : <span class="key-display">${event.key}</span> (Code: ${event.keyCode})`;
+        }
+        
+        // 10. onkeyup
+        function handleKeyUp(event) {
+            document.getElementById('keyupOutput').innerHTML = 
+                `⌨️ Touche RELÂCHÉE : <strong>${event.key}</strong> (Code: ${event.keyCode})`;
+            
+            // Affichage visuel de la touche
+            const keyDisplay = document.getElementById('keyDisplay');
+            keyDisplay.innerHTML = `<span class="key-display">${event.key}</span>`;
+        }
+        
+        // 11. onplay
+        function handlePlay() {
+            document.getElementById('videoOutput').innerHTML = 
+                '▶️ Vidéo en lecture ! ' + new Date().toLocaleTimeString();
+        }
+        
+        // 12. onpause
+        function handlePause() {
+            document.getElementById('videoOutput').innerHTML = 
+                '⏸️ Vidéo en pause ! ' + new Date().toLocaleTimeString();
+        }
+        
+        // 13. onsubmit
+        function handleSubmit(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            document.getElementById('submitOutput').innerHTML = 
+                `✅ Formulaire soumis !<br>Utilisateur : <strong>${username}</strong><br>Mot de passe : ${'*'.repeat(password.length)}`;
+            
+            return false;
+        }
+    </script>
+</body>
+</html>
